@@ -1,6 +1,8 @@
 # Website to Brochure Generator
 
-Convert any website into a marketing brochure.
+Convert any website into a marketing brochure. 
+
+Credit LLM Engineering week 1 / day 5 project [here](https://github.com/ed-donner/llm_engineering/blob/main/week1/day5.ipynb).
 
 ## Install and Run
 

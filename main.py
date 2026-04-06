@@ -4,10 +4,10 @@ Website to Brochure Generator
 
 import os
 import json
+from openai import OpenAI
 from dotenv import load_dotenv
 from scraper import fetch_website_links, fetch_website_contents
 from prompts import link_system_prompt, brochure_system_prompt
-from openai import OpenAI
 
 load_dotenv()
 
@@ -77,12 +77,25 @@ def create_brochure(company_name, url):
     result = response.choices[0].message.content
     print(result)
 
+def stream_brochure(company_name, url):
+    stream = openai.chat.completions.create(
+        model=MODEL,
+        messages=[
+            {"role": "system", "content": brochure_system_prompt},
+            {"role": "user", "content": get_brochure_user_prompt(company_name, url)}
+          ],
+        stream=True
+    )
+    for chunk in stream:
+        print(chunk.choices[0].delta.content or '', end='', flush=True)
+    print()
+
 def main():
     """Main entry point for testing."""
     url = input("Enter a URL to use as content generate the brochure: ")
     print("\nFetching and generating...\n")
-    create_brochure("Example Company", url)
-
+    # create_brochure("Example Company", url)
+    stream_brochure("Example Company", url)
 
 if __name__ == "__main__":
     main()
